@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>끝말잇기 - 김현탁</title>
+  <link rel="stylesheet" href="css/word-relay.css" />
+</head>
+
+<body>
+  <h1>끝말잇기 게임</h1>
+
+  <div class="game-container">
+    <!-- 좌측: 참가자 목록 -->
+    <div class="left-panel">
+      <h3>참가자 목록</h3>
+      <ul id="player-list"></ul>
+    </div>
+
+    <!-- 중앙: 게임 플레이 -->
+    <div class="center-panel">
+      <div><strong>현재 차례:</strong> <span id="order"></span></div>
+      <div><strong>제시어:</strong> <span id="word"></span></div>
+
+      <div class="input-area">
+        <input type="text" />
+        <button>입력</button>
+      </div>
+    </div>
+
+    <!-- 우측: 단어 기록 -->
+    <div class="right-panel">
+      <h3>입력 기록</h3>
+      <ul id="word-history"></ul>
+    </div>
+  </div>
+
+  <script src="js/word-relay.js"></script>
+</body>
+</html>

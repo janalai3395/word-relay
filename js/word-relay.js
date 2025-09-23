@@ -6,6 +6,7 @@ let currentIndex = 0;
 let newWord;
 let word;
 let usedWords = [];
+let playerColors = [];
 
 const input = document.querySelector('input');
 const button = document.querySelector('button');
@@ -13,10 +14,11 @@ const wordEl = document.querySelector('#word');
 const orderEl = document.querySelector('#order');
 const historyEl = document.querySelector('#word-history');
 const playerListEl = document.querySelector('#player-list');
+const restartBtn = document.querySelector('#restart-btn');
 
 const updateOrder = () => {
     if (players.length > 0) {
-        orderEl.textContent = players[currentIndex];
+        orderEl.textContent = players[currentIndex]; // 현재 참가자 이름만 표시
     } else {
         orderEl.textContent = '게임 종료';
     }
@@ -38,6 +40,14 @@ function updateUI(stage) {
 const addToHistory = (word) => {
     const li = document.createElement('li');
     li.textContent = word;
+
+    // ✅ 현재 단어를 입력한 사람의 색상 적용
+    li.style.color = playerColors[currentIndex];
+
+    // ✅ 구분선 스타일
+    li.style.borderBottom = '1px dashed #ccc';
+    li.style.padding = '5px 0';
+
     historyEl.appendChild(li);
 };
 
@@ -46,6 +56,7 @@ const renderPlayerList = () => {
     players.forEach((player, idx) => {
         const li = document.createElement('li');
         li.textContent = `${idx + 1}. ${player}`;
+        li.style.color = playerColors[idx]; // ✅ 색 적용
         playerListEl.appendChild(li);
     });
 };
@@ -79,6 +90,11 @@ const onClickButton = () => {
         }
 
         players.push(newWord);
+
+        // ✅ 색상 랜덤 지정
+        const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+        playerColors.push(randomColor);
+
         nameIndex++;
 
         if (nameIndex < number) {
@@ -109,11 +125,13 @@ const onClickButton = () => {
                 alert("모든 참가자가 탈락했습니다. 게임 종료!");
                 input.disabled = true;
                 button.disabled = true;
+                restartBtn.style.display = 'inline-block';
                 return;
             } else if (players.length === 1) {
                 alert(`${players[0]}님이 최종 우승자입니다!`);
                 input.disabled = true;
                 button.disabled = true;
+                restartBtn.style.display = 'inline-block';
                 return;
             }
 
@@ -142,11 +160,13 @@ const onClickButton = () => {
                 alert("모든 참가자가 탈락했습니다. 게임 종료!");
                 input.disabled = true;
                 button.disabled = true;
+                restartBtn.style.display = 'inline-block';
                 return;
             } else if (players.length === 1) {
                 alert(`${players[0]}님이 최종 우승자입니다!`);
                 input.disabled = true;
                 button.disabled = true;
+                restartBtn.style.display = 'inline-block';
                 return;
             }
 
@@ -159,6 +179,33 @@ const onClickButton = () => {
     }
 };
 
-button.addEventListener('click', onClickButton);
 
+
+const restartGame = () => {
+    // 상태 초기화
+    gameStage = 'input-count';
+    number = 0;
+    nameIndex = 0;
+    players = [];
+    currentIndex = 0;
+    newWord = '';
+    word = '';
+    usedWords = [];
+
+    // 화면 초기화
+    wordEl.textContent = '';
+    orderEl.textContent = '';
+    historyEl.innerHTML = '';
+    playerListEl.innerHTML = '';
+
+    input.disabled = false;
+    button.disabled = false;
+    restartBtn.style.display = 'none';
+
+    updateUI(gameStage);
+    resetInput();
+};
+
+restartBtn.addEventListener('click', restartGame);
+button.addEventListener('click', onClickButton);
 updateUI(gameStage);
